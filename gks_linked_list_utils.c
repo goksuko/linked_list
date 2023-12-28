@@ -54,89 +54,6 @@ Node *delete_list(Node *node)
 	return (NULL);
 }
 
-Node *insert_at_head(Node **head, int new_value)
-{
-	Node    *new_node;
-
-	new_node = calloc(1, sizeof(Node));
-	if (new_node == NULL)
-		return (NULL);
-	new_node->value = new_value;
-	if (*head == NULL)
-		return (new_node);
-	else
-	{
-		new_node->next = *head;
-		return (new_node);
-	}
-}
-
-Node* insert_at_tail(Node **head, int new_value)
-{
-	Node    *new_node;
-	Node    *current;
-
-	new_node = calloc(1, sizeof(Node));
-	if (new_node == NULL)
-		return (NULL);
-	new_node->value = new_value;
-	new_node->next = NULL;
-	current = *head;
-	if (current == NULL)
-		return (new_node);
-	else
-	{
-		while (current->next != NULL)
-		{
-			current = current->next;
-		}
-		current->next = new_node;
-		return (*head);
-	}
-}
-
-Node *delete_at_head(Node **head)
-{
-	Node    *to_return;
-	Node    *current;
-
-	current = *head;
-	if (current == NULL)
-	{
-		return (NULL);
-	}
-	else
-	{
-		to_return = current->next;
-		free(*head);
-		return (to_return);
-	}
-}
-
-Node *delete_at_tail(Node **head)
-{
-	Node    *current;
-
-	current = *head;
-	if (current == NULL)
-		return (NULL);
-	else if (current->next == NULL)
-	{
-		free(*head);
-		return (NULL);
-	}
-	else
-	{
-		while (current->next->next != NULL)
-		{
-			current = current->next;
-		}
-		free(current->next);
-		current->next = NULL;
-		return (*head);
-	}
-}
-
 int length(Node **head)
 {
 	Node    *current;
@@ -188,121 +105,6 @@ void replace_matches(Node *node, int find_value, int replace_value)
 			node->value = replace_value;
 		replace_matches(node->next, find_value, replace_value);
 	}
-}
-
-Node *delete_first_match(Node **head, int delete_value, bool *was_deleted)
-{
-	Node    *current;
-	Node    *previous;
-	Node    *following;
-	
-	current = *head;
-	if (current == NULL)
-	{
-		*was_deleted = false;
-		return (NULL);
-	}
-	else if (current->value == delete_value)
-	{
-		*was_deleted = true;
-		following = current->next;
-		free(current);
-		return (following);
-	}
-	else
-	{
-		previous = *head;
-		current = previous->next;
-		while (current != NULL)
-		{
-			if (current->value == delete_value)
-			{
-				*was_deleted = true;
-				previous->next = current->next;
-				free(current);
-				return (*head);
-			}
-			previous = current;
-			current = current->next;
-		}
-		*was_deleted = false;
-		return (*head);
-	}
-}
-//most unefficient way to do this
-Node *delete_all_matches3(Node **head, int delete_value, bool *was_deleted)
-{
-	Node    *temp;
-	int    i;
-	int    j;
-	
-	temp = *head;
-	i = length(head);
-	j = i;
-
-	while(i--)
-	{
-		delete_first_match(&temp, delete_value, was_deleted);
-	}
-	if (j == length(head))
-		*was_deleted = false;
-	else
-		*was_deleted = true;
-	return (*head);
-}
-//least unefficient way to do this
-Node *delete_all_matches2(Node **head, int delete_value, int *number_deleted)
-{
-	Node    *current;
-	bool    was_deleted;
-
-	was_deleted = false;
-	current = *head;
-	*number_deleted = 0;
-	do
-	{
-		delete_first_match(&current, delete_value, &was_deleted);
-		if (was_deleted == true)
-			*number_deleted = *number_deleted + 1;
-	} while (was_deleted == true);
-	return (current);
-}
-
-//most efficient way to do this
-Node *delete_all_matches(Node **head, int delete_value, int *number_deleted)
-{
-	Node    *current;
-	Node    *new_head;
-	Node    *following;
-	Node    *temp;
-
-	current = *head;
-	*number_deleted = 0;
-	if (current == NULL)
-		return (NULL);
-	while (current != NULL && current->value == delete_value)
-	{
-		following = current->next;
-		free(current);
-		*number_deleted = *number_deleted + 1;
-		current = following;
-	}
-	new_head = current;
-	if (new_head == NULL)
-		return (NULL);
-	while (current->next != NULL)
-	{
-		if (current->next->value == delete_value)
-		{
-			temp = current->next;
-			current->next = current->next->next;
-			free(temp);
-			*number_deleted = *number_deleted + 1;
-		}
-		else
-			current = current->next;
-	}
-	return (new_head);
 }
 
 Node *append_list(Node **head1, Node **head2)
@@ -364,144 +166,6 @@ Node *reverse_list(Node **head)
 		next_node = temp;
 	}
 	return (current);
-}
-
-void sort_list_bubble(Node **head)
-{
-	Node *current;
-	Node *previous;
-	bool swapped;
-	int temp;
-
-	current = *head;
-	if (current == NULL)
-		return ;
-	if (current->next == NULL)
-		return ;
-	swapped = false;
-	do {
-		swapped = false;
-		current = *head;
-		previous = NULL;
-		while (current->next != NULL)
-		{
-			previous = current;
-			current = current->next;            
-			if (current != NULL)
-			{
-				if (current->value < previous->value)
-				{
-					temp = current->value;
-					current->value = previous->value;
-					previous->value = temp;
-					swapped = true;
-				}
-			}
-		}
-	}while (swapped == true);  
-}
-
-void remove_duplicates(Node **head)
-{
-	Node    *current;
-	Node    *current2;
-	Node    *duplicate;
-	
-
-	current = *head;
-	if (current == NULL)
-		return ;
-	if (current->next == NULL)
-		return ;
-	while (current != NULL && current->next != NULL)
-	{
-		current2 = current;
-		while (current2->next != NULL)
-		{
-			if (current->value == current2->next->value)
-			{
-				duplicate = current2->next;
-				current2->next = current2->next->next;
-				free(duplicate);
-			}
-			else
-				current2 = current2->next;
-		}
-		current = current->next;
-	}
-}
-
-Node *insert_after(Node **head, int new_value, int after_value)
-{
-	Node    *new_node;
-	Node    *current;
-	Node    *following;
-
-	new_node = calloc(1, sizeof(Node));
-	if (new_node == NULL)
-		return (NULL);
-	new_node->value = new_value;
-	current = *head;
-	if (current == NULL)
-		return (new_node);
-	else
-	{
-		while (current->next != NULL)
-		{
-			if (current->value == after_value)
-			{
-				following = current->next;
-				current->next = new_node;
-				new_node->next = following;
-				return (*head);
-			}
-			else
-				current = current->next;
-		}
-		if (current->next == NULL)
-		{
-			free(new_node);
-			return (*head);
-		}
-	}
-	return (*head);
-}
-
-Node *insert_after_or_tail(Node **head, int new_value, int after_value)
-{
-	Node    *new_node;
-	Node    *current;
-	Node    *following;
-
-	new_node = calloc(1, sizeof(Node));
-	if (new_node == NULL)
-		return (NULL);
-	new_node->value = new_value;
-	current = *head;
-	if (current == NULL)
-		return (new_node);
-	else
-	{
-		while (current->next != NULL)
-		{
-			if (current->value == after_value)
-			{
-				following = current->next;
-				current->next = new_node;
-				new_node->next = following;
-				return (*head);
-			}
-			else
-				current = current->next;
-		}
-		if (current->next == NULL)
-		{
-			current->next = new_node;
-			new_node->next = NULL;
-			return (*head);
-		}
-	}
-	return (*head);
 }
 
 //portfolio courses with memory leak
@@ -800,64 +464,6 @@ Node *move_head_to_tail(Node **head)
 	return (*head);
 }
 
-void delete_node(Node **node)
-{
-	Node *temp;
-
-	temp = *node;
-	*node = (*node)->next;
-	free(temp);
-}
-
-Node *sort_list_quick(Node **head)
-{
-	Node *current;
-	Node *pivot;
-	Node *smaller;
-	Node *larger;
-	Node *temp;
-
-	current = *head;
-	if (current == NULL)
-		return (NULL);
-	if (current->next == NULL)
-		return (current);
-	pivot = current;
-	smaller = NULL;
-	larger = NULL;
-	current = current->next;
-	while (current != NULL)
-	{
-		temp = current->next;
-		if (current->value <= pivot->value)
-		{
-			current->next = smaller;
-			smaller = current;
-		}
-		else
-		{
-			current->next = larger;
-			larger = current;
-		}
-		current = temp;
-	}
-	smaller = sort_list_quick(&smaller);
-	larger = sort_list_quick(&larger);
-	pivot->next = larger;
-	if (smaller == NULL)
-		return (pivot);
-	else
-	{
-		current = smaller;
-		while (current->next != NULL)
-		{
-			current = current->next;
-		}
-		current->next = pivot;
-		return (smaller);
-	}
-}
-
 void swap_data(Node **node1, Node **node2)
 {
 	int temp;
@@ -939,49 +545,75 @@ Node *min_node(Node **head)
 	return (min_node);
 }
 
-Node *sort_list_insertion(Node **head)
+Node *split_from_position(Node **head, int position)
 {
 	Node *current;
-	Node *head_org;
-	Node *node1;
-	Node *node2;
-	Node *temp_prev;
-	Node *temp2;
-	Node *previous;
+	Node *following;
+	Node *new_head;
+	Node *temp;
+	int i;
 
-	current = *head; 
+	current = *head;
 	if (current == NULL)
 		return (NULL);
 	if (current->next == NULL)
 		return (current);
-	previous = current;
-	current = current->next;
-	while (previous->next != NULL)
+	if (position < 0)
+		return (current);
+	if (position > length(head) - 1)
+		return (NULL);
+	i = 0;
+	while (i < position)
 	{
-		temp_prev = previous;
-		while (previous->value > current->value)
-		{
-			node1 = previous;
-			node2 = current;
-			temp2 = node2->next;
-			node1->next = temp2;
-			node2->next = node1;
-			previous = node2;
-			if (previous->value < head_org->value)
-				head_org = previous;
-			current = temp2;
-		}
-		previous = temp_prev;
-		previous = previous->next;
-		current = previous->next->next;
+		current = current->next;
+		i++;
 	}
-	return (head_org);
+	following = current->next;
+	current->next = NULL;
+	new_head = following;
+	current = *head;
+	i = i + 1;
+	while (i--)
+	{
+		temp = current;
+		current = current->next;
+		free(temp);
+	}
+	return (new_head);
 }
 
-Node *delete_last_match(Node **head, int delete_value, bool *was_deleted);
-
-Node *split_from_position(Node **head, int position);
-
-Node *split_from_value(Node **head, int value);
-
-Node *insert_after_position(Node **head, int new_value, int position);
+Node *split_from_value(Node **head, int value)
+{
+	Node    *current;
+	Node    *following;
+	Node	*temp;
+	
+	current = *head;
+	if (current == NULL)
+		return (NULL);
+	temp = NULL;
+	while (current != NULL)
+	{
+		if (current->value == value)
+		{
+			following = current->next;
+			temp = current;
+			break ;
+		}
+		current = current->next;
+	}
+	if (temp != NULL)
+	{
+		current = *head;
+		while (current->next != following)
+		{
+			temp = current;
+			current = current->next;
+			free(temp);
+		}
+		current->next = NULL;
+		free(current);
+		return (following);
+	}
+	return (*head);
+}

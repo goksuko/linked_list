@@ -54,7 +54,7 @@ Node *reverse_list2(Node **head);
 Node *reverse_list(Node **head);
 void sort_list_bubble(Node **head);
 void remove_duplicates(Node **head);
-Node *insert_after(Node **head, int new_value, int after_value);
+Node *insert_after_value(Node **head, int new_value, int after_value);
 Node *insert_after_or_tail(Node **head, int new_value, int after_value);
 //portfolio courses with memory leak
 void    sum_values2(Node **head1, Node **head2);
@@ -76,6 +76,9 @@ int max_in_list(Node **head);
 int min_in_list(Node **head);
 Node *max_node(Node **head);
 Node *min_node(Node **head);
-Node *sort_list_insertion(Node **head);
+Node *delete_last_match(Node **head, int delete_value, bool *was_deleted);
+Node *split_from_position(Node **head, int position);
+Node *split_from_value(Node **head, int value);
+Node *insert_after_position(Node **head, int new_value, int position);
 
 #endif

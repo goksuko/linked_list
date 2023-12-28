@@ -1,5 +1,8 @@
 NAME = gks_linked_list.a
-SRCS = gks_linked_list_utils.c
+SRCS = gks_linked_list_utils.c \
+		gks_linked_list_deletions.c \
+		gks_linked_list_insertions.c \
+		gks_linked_list_sorts.c \
 
 OBJS = $(SRCS:.c=.o)
 
