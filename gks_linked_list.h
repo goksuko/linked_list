@@ -80,5 +80,7 @@ Node *delete_last_match(Node **head, int delete_value, bool *was_deleted);
 Node *split_from_position(Node **head, int position);
 Node *split_from_value(Node **head, int value);
 Node *insert_after_position(Node **head, int new_value, int position);
+int	search_value(Node **head, int value);
+
 
 #endif

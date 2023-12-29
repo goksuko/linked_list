@@ -619,3 +619,23 @@ Node *split_from_value(Node **head, int value)
 	}
 	return (*head);
 }
+
+int	search_value(Node **head, int value)
+{
+	Node	*current;
+	int		i;
+
+	i = 0;	
+	current = *head;
+	while (current != NULL)
+	{
+		if (current->value == value)
+		{
+			printf("i: %d\n", i);
+			return (i);
+		}
+		current = current->next;
+		i++;
+	}
+	return (-1);
+}
