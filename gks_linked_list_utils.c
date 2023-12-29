@@ -643,7 +643,7 @@ Node *rest_list(Node **long_list, Node **begin)
 	Node *current_begin;
 	Node *new_head;
 	Node *temp;
-
+	
 	current_long = *long_list;
 	current_begin = *begin;
 	if (current_long == NULL)
