@@ -630,13 +630,37 @@ int	search_value(Node **head, int value)
 	while (current != NULL)
 	{
 		if (current->value == value)
-		{
-			printf("i: %d\n", i);
 			return (i);
-		}
 		current = current->next;
 		i++;
 	}
 	return (-1);
 }
 
+Node *rest_list(Node **long_list, Node **begin)
+{
+	Node *current_long;
+	Node *current_begin;
+	Node *new_head;
+	Node *temp;
+
+	current_long = *long_list;
+	current_begin = *begin;
+	if (current_long == NULL)
+		return (NULL);
+	if (current_begin == NULL)
+		return (current_long);
+	while (current_begin->next != NULL) // && current_begin->value != '\n')
+	{
+		temp = current_long;
+		current_long = current_long->next;
+		free(temp);
+		temp = current_begin;
+		current_begin = current_begin->next;
+		free(temp);
+	}
+	new_head = current_long->next;
+	free(current_long);
+	free(current_begin);
+	return (new_head);
+}

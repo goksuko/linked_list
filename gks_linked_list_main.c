@@ -12,6 +12,9 @@ int main(void)
 	Node    *head8;
 	Node    *head9;
 	Node    *head10;
+	Node	*head11;
+	Node	*begin;
+	Node	*rest;
 	Node    *head_timer;
 	bool    true_or_false;
 	int     i;
@@ -219,8 +222,8 @@ int main(void)
 		head10 = insert_at_tail(&head10, i % 7);
 	}
 	print_list(&head10);
-	printf("max: %d\n", max_in_list(&head10));
-	printf("min: %d\n", min_in_list(&head10));
+	// printf("max: %d\n", max_in_list(&head10));
+	// printf("min: %d\n", min_in_list(&head10));
 	
 	printf("*****delete last match******\n");
 	head10 = delete_last_match(&head10, 5, &true_or_false);
@@ -237,6 +240,29 @@ int main(void)
 	printf("*****insert after position******\n");
 	head10 = insert_after_position(&head10, 100, 3);
 	print_list(&head10);
+
+	printf("*****search value******\n");
+	printf("search value 100: %d\n", search_value(&head10, 100));
+	printf("search value 3: %d\n", search_value(&head10, 3));
+
+	printf("*****rest list******\n");
+	head11 = NULL;
+	for (i = 0; i < 10; i++)
+	{
+		head11 = insert_at_tail(&head11, i);
+	}
+	begin = duplicate_list(&head10);
+	head10 = append_list(&head10, &head11);
+	printf("begin\n");
+	printf("begin address: %p\n", begin);
+	print_list(&begin);
+	printf("long_list\n");
+	printf("long_list address: %p\n", head10);
+	print_list(&head10);
+	rest = NULL;
+	rest = rest_list(&head10, &begin);
+	printf("rest\n");
+	print_list(&rest);
 	
     printf("*****delete memory******\n");
     // delete_list_memory(&head);
@@ -250,7 +276,7 @@ int main(void)
     head6 = delete_list(head6);
     head7 = delete_list(head7);
     head9 = delete_list(head9);
-	head10 = delete_list(head10);
+	rest = delete_list(rest);
     print_list(&head);
     print_list(&head2);
     print_list(&head3);

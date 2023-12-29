@@ -81,6 +81,7 @@ Node *split_from_position(Node **head, int position);
 Node *split_from_value(Node **head, int value);
 Node *insert_after_position(Node **head, int new_value, int position);
 int	search_value(Node **head, int value);
+Node *rest_list(Node **long_list, Node **begin);
 
 
 #endif
