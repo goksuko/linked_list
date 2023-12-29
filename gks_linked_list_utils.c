@@ -114,6 +114,8 @@ Node *append_list(Node **head1, Node **head2)
 	current = *head1;
 	if (current == NULL)
 		return (*head2);
+	if (*head2 == NULL)
+		return (*head1);
 	else
 	{
 		while (current->next != NULL)
