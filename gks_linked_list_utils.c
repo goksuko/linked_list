@@ -18,12 +18,17 @@ void print_list(Node **head)
 
 	current = *head;
 	i = 0;
-	printf("===Printing List===\n");
-	while (current != NULL)
+	if (current == NULL)
+		printf("List is empty.\n");
+	else
 	{
-		printf("Node %d: %d\n", i, current->value);
-		i++;
-		current = current->next;
+		printf("===Printing List===\n");
+		while (current != NULL)
+		{
+			printf("Node %d: %d\n", i, current->value);
+			i++;
+			current = current->next;
+		}
 	}
 }
 
