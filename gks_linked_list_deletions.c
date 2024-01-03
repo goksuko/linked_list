@@ -28,6 +28,7 @@ Node *delete_at_tail(Node **head)
 	else if (current->next == NULL)
 	{
 		free(*head);
+		*head = NULL;
 		return (NULL);
 	}
 	else
